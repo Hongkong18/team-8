@@ -49,11 +49,12 @@ function searchFeedback(keywords, district, req, res){
 
     // PYTHON MICROSERVICE GETTING THE KEYWORDS USING NLTK
 
-    let search_str = `.*${keywords}.*`
+    // let search_str = `${keywords}`
 
-    console.log(search_str)
+    // console.log(search_str)
+    console.log(keywords)
 
-    collection.find({"before": {$regex : search_str} }).toArray(function(err, docs) {
+    collection.find( { $text: { $search: "before" }}).toArray(function(err, docs) {
         assert.equal(err, null);
         console.log("Found the following records");
         console.log(docs)

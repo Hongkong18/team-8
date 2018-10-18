@@ -1,58 +1,57 @@
 import React from 'react';
-import SelectSearch from 'react-select-search';
+import ReactDOM from 'react-dom';
 import './app.css';
-// import ChatBot from '../lib/index';
+import Card from './Card';
+// import SearchBar from 'material-ui-search-bar'
 
-const options = [
-    {name: 'Swedish', value: 'sv'},
-    {name: 'English', value: 'en'},
-    {name: 'Spanish', value: 'es'},
-    /*{
-        type: 'group',
-        name: 'Group name',
-        items: [
+import SearchField from "react-search-field" ;
 
-        ]
-    },*/
-];
 
-// class ChatBubble extends React.Component {
-//     render() {
-//         return(
-//             <div style={{"display": "block"}}>
-//                 <div style={{"border":"1px solid", "border-radius":"5px", "padding":"5px", "margin": "10px", "min-width":"50%", "max-width":"80%", "float": this.props.left === "true" ? "left": "right"}}
-//
-//                 </div>
-//             </div>
-//         )
-//     }
-// }
-//
-// class ChatInput extends React.Component {
-//     render() {
-//         return(
-//             <div style={{"display":"inline"}}>
-//                 <input style={{"border":"1px solid", "padding":"10px", "margin": "10px", "width": "78%"}} placeholder={"Text message"}>
-//                 </input>
-//                 <button style={{"border":"1px solid", "padding":"10px", "margin": "10px", "width": "10%"}}> SEND
-//                 </button>
-//             </div>
-//         )
-//
-//     }
-// }
 
-export default class Chatbox extends React.Component{
+export default class App extends React.Component{
+
+
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+          data: [],
+        };
+      }
+
+
+    onSearchClick(doctor_name){
+        
+        fetch(`http://localhost:8080/api/search?docname=AU%20MING%20KAI&loc=Kowloon`)
+        .then(
+            results => 
+               results.json()
+            
+        ).then(data => {
+        console.log(data.data);
+            this.setState({ data:data.data })
+        })
+
+
+        
+    }
+
     render() {
+        let cards = this.state.data.map(d => (<Card name={d.Name}
+        phone={d.Contact[0]} address={d.Address}/>))
         return(
             <div>
-            {/*<div style={{"border":"1px solid", "width":"40%"}}>*/}
-                <SelectSearch options={options} value="sv" name="language" placeholder="Choose your language" />
-                {/*<SelectSearch value="sv" name="languages" placeholder="Search friends" value=""/>*/}
-                {/*<ChatBubble left="true"/>*/}
-                {/*<ChatBubble left="false"/>*/}
-                {/*<ChatInput/>*/}
+            <SearchField
+            placeholder="Search..."
+            // onChange={onChange}
+            onEnter={this.onSearchClick.bind(this)}
+            onSearchClick={this.onSearchClick.bind(this)}
+            searchText="This is initial search text"
+            classNames="test-class"
+            />
+            <br /><br />
+            {cards}
             </div>
-        )
+        )   
     }
 }
