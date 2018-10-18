@@ -18,46 +18,61 @@ MongoClient.connect(url, function(err, client) {
 
     db = client.db(dbName);
 
-
-    findDocuments(db, function(data){
-            for (let dat in data){
-                console.log(dat)
-            }
-    });
-
-
 });
 
+function searchDoctorCallback(docs, res){
+    res.send( {"data": docs} );
+}
 
 
-function getDocuments(callback){
+function searchFeedbackCallback(){
+    res.send()
+}
+
+
+function searchDoctor(doc_name, district, req, res){
+    
+    const collection = db.collection('Doctors');
+
+    collection.find({"Name":doc_name, "District" : district}).toArray(function(err, docs) {
+        assert.equal(err, null);
+        console.log("Found the following records");
+        console.log(docs)
+        searchDoctorCallback(docs, res);
+      });
+}
+
+
+function searchFeedback(doc_name, district, callback){
+    
+    const collection = db.collection('Feedback');
+
+    // PYTHON MICROSERVICE GETTING THE KEYWORDS USING NLTK
+
+    collection.find({/* FILTER FOR EACH KEYWORD AND LOCATION   */}).toArray(function(err, docs) {
+        assert.equal(err, null);
+        console.log("Found the following records");
+        console.log(docs)
+        callback(docs);
+      });
+}
+
+
+function getRecords(callback){
 
     if(db!=null){
-        findDocuments(db, callback);
+        findRecords(db, callback);
     }
 };
 
 
 
-const insertDocuments = function(db, callback) {
-    // Get the documents collection
-    const collection = db.collection('documents');
-    // Insert some documents
-    collection.insertMany([
-      {a : 1}, {a : 2}, {a : 3}
-    ], function(err, result) {
-      assert.equal(err, null);
-      assert.equal(3, result.result.n);
-      assert.equal(3, result.ops.length);
-      console.log("Inserted 3 documents into the collection");
-      callback(result);
-    });
-  }
 
 
-  const findDocuments = function(db, callback) {
+
+  const findRecords = function(db, callback) {
     // Get the documents collection
-    const collection = db.collection('documents');
+    const collection = db.collection('Doctors');
     // Find some documents
     collection.find({}).toArray(function(err, docs) {
       assert.equal(err, null);
@@ -69,5 +84,6 @@ const insertDocuments = function(db, callback) {
 
 
 module.exports = {
-    getDocuments: getDocuments
+    getRecords: getRecords,
+    searchDoctor: searchDoctor
 };
