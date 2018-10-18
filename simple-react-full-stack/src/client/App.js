@@ -1,23 +1,39 @@
-import React, { Component } from 'react';
-import './app.css';
-import ReactImage from './react.png';
+import React from 'react';
+// import ChatBot from '../lib/index';
 
-export default class App extends Component {
-  state = { username: null };
+class ChatBubble extends React.Component {
+    render() {
+        return(
+            <div style={{"border":"1px solid", "border-radius":"5px", "padding":"5px", "margin": "10px", "width":"80%", "float": this.props.left === "true" ? "left": "right"}}>
+                hi
+            </div>
+        )
+    }
+}
 
-  componentDidMount() {
-    fetch('/api/getUsername')
-      .then(res => res.json())
-      .then(user => this.setState({ username: user.username }));
-  }
+class ChatInput extends React.Component {
+    render() {
+        return(
+            <div style={{"display":"inline"}}>
+                <input style={{"border":"1px solid", "padding":"10px", "margin": "10px", "width": "75%"}} placeholder={"Text message"}>
+                </input>
+                <button style={{"border":"1px solid", "padding":"10px", "margin": "10px", "width": "10%"}}> SEND
+                </button>
+            </div>
+        )
 
-  render() {
-    const { username } = this.state;
-    return (
-      <div>
-        {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
-        <img src={ReactImage} alt="react" />
-      </div>
-    );
-  }
+    }
+}
+
+
+export default class Chatbox extends React.Component{
+    render(){
+        return(
+            <div style={{"border":"1px solid", "width":"40%", "height": "100px;"}}>
+                <ChatBubble left="true"/>
+                <ChatBubble left="false"/>
+                <ChatInput/>
+            </div>
+        )
+    }
 }

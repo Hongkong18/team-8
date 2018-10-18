@@ -1,7 +1,7 @@
 const express = require('express');
 const os = require('os');
 
-const db = require('./db')
+// const db = require('./db')
 
 const app = express();
 
