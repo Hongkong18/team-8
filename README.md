@@ -1,4 +1,4 @@
-# Stack
+# TEAM 8 
 
 ## DB - Mongodb
 - https://www.npmjs.com/package/mongodb
