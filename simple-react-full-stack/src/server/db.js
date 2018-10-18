@@ -21,12 +21,12 @@ MongoClient.connect(url, function(err, client) {
 });
 
 function searchDoctorCallback(docs, res){
-    res.send( {"data": docs} );
+    res.send( {"data": docs});
 }
 
 
-function searchFeedbackCallback(){
-    res.send()
+function searchFeedbackCallback(docs, res){
+    res.send({"data": docs});
 }
 
 
@@ -43,17 +43,21 @@ function searchDoctor(doc_name, district, req, res){
 }
 
 
-function searchFeedback(doc_name, district, callback){
+function searchFeedback(keywords, district, req, res){
     
     const collection = db.collection('Feedback');
 
     // PYTHON MICROSERVICE GETTING THE KEYWORDS USING NLTK
 
-    collection.find({/* FILTER FOR EACH KEYWORD AND LOCATION   */}).toArray(function(err, docs) {
+    let search_str = `.*${keywords}.*`
+
+    console.log(search_str)
+
+    collection.find({"before": {$regex : search_str} }).toArray(function(err, docs) {
         assert.equal(err, null);
         console.log("Found the following records");
         console.log(docs)
-        callback(docs);
+        searchFeedbackCallback(docs, res);
       });
 }
 
@@ -85,5 +89,6 @@ function getRecords(callback){
 
 module.exports = {
     getRecords: getRecords,
-    searchDoctor: searchDoctor
+    searchDoctor: searchDoctor,
+    searchFeedback: searchFeedback
 };
