@@ -1,2 +1,7 @@
 backend/node_modules/
 my-app/node_modules/
+backend/natlang/usr/
+backend/natlang/bin/
+backend/natlang/env/
+backend/natlang/lib/
+backend/natlang/include/
