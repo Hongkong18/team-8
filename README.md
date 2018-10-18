@@ -55,3 +55,11 @@ pythonProcess.stdout.on('data', (data) => {
     // Do something with the data returned from python script
 });
 
+
+# Testing
+
+
+## Backend
+
+http://localhost:8080/api/search?docname=AU%20MING%20KAI&loc=Kowloon
+http://localhost:8080/api/chatbot?keywords=before&loc=Kowloon
