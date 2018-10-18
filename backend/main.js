@@ -1,5 +1,3 @@
-
-
 var express = require('express');
 var app     = express();
 var port    =   process.env.PORT || 8080;
@@ -13,6 +11,7 @@ var db = require("./db");
 app.get('/sample', function(req, res) {
     res.send('this is a sample!');  
 });
+
 
 // we'll create our routes here
 
